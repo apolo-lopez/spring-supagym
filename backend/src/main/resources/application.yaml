@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: supagym
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/gym_system
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        id.new_generator_mappings: false  # Para UUID generation
+    open-in-view: false
+    show-sql: true
+
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      database: 0
+
+  flyway:
+    locations: classpath:db/migration/shared,classpath:db/migration/templates
+    baseline-on-migrate: true
+    enabled: true
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:your-super-secret-jwt-key-must-be-at-least-256-bits-long}
+    expiration: 86400000
+  minio:
+    endpoint: http://localhost:9000
+    access-key: ${MINIO_ACCESS_KEY:MINIOACCESSKEY}
+    secret-key: ${MINIO_SECRET_KEY:MINIOSECRETKEY}
+  firebase:
+    credentials-path: ${FIREBASE_CREDENTIALS_PATH:}
+
+server:
+  port: 8000
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: DEBUG
